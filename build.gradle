@@ -1,0 +1,78 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+version = "${minecraft_version}-${forge_version}"
+group = "gtcematerialcaster"
+archivesBaseName = "GtceMaterialCaster"
+
+sourceCompatibility = targetCompatibility = '1.8'
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+minecraft {
+    version = "${minecraft_version}-${forge_version}"
+    runDir = "run"
+    mappings = "stable_39"
+
+    replace("@VERSION@", project.version)
+    replaceIn("GtceMaterialCaster.java")
+}
+
+repositories {
+    maven {
+        url = "http://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        url = "http://maven.ic2.player.to"
+    }
+	maven {
+		url "http://tehnut.info/maven"
+	}
+	maven {
+		url "https://minecraft.curseforge.com/api/maven"
+	}
+	maven {
+	   url = "http://chickenbones.net/maven/"
+    }
+    maven {
+        url = "https://mod-buildcraft.com/maven/"
+    }
+}
+
+dependencies {
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.14.519"
+    deobfCompile "com.blamejared:MTLib:3.0.4.8"
+    deobfCompile "codechicken:ChickenASM:1.12-+"
+    deobfCompile "codechicken-lib-1-8:CodeChickenLib-1.12.2:3.2.3.357:universal"
+    deobfCompile "gregtechce:gregtech:1.12.2:1.8.13.465"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
